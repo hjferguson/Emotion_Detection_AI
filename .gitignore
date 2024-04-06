@@ -1,0 +1,80 @@
+# General
+.DS_Store
+Thumbs.db
+db.sqlite3
+*.pyc
+*__pycache__/
+*.pyo
+.env
+.venv
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints*
+*.ipynb_meta
+
+# Python environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*~.nib
+local.properties
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build outputs
+/dist
+/build
+*.bundle.js
+*.bundle.css
+*.min.js
+*.min.css
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript compiled code
+*.js
+*.js.map
+*.ts.map
+*.d.ts
+!jest.config.js
+!/webpack.config.js
+
+# Python distribution artifacts
+/dist
+/build
+*.egg-info
+*.tar.gz
+*.wheel
+.whl
+
+# TensorFlow.js model files
+model.json
+*.bin
+
+# Serialized Python models and datasets
+*.h5
+*.sav
+*.pickle
+*.pkl
+*.npz
+/data/
+*.pb
+
+archive/
