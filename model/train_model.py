@@ -10,7 +10,7 @@
 #7. adding rescaling to the new model improves accuracy slightly. Probably because 48x48 pretty pixelated whereas 255 is more clear.
 #8. after multiple tests, attempting to augment the data always resulted in a lower accuracy. 
 #I removed "disgusted" from the dataset because it was underrepresented. This improved accuracy slightly
-#With hours of different attempt, I'm going to settle at 57-59%. From research, it looks like experts can only get to around 75% with this dataset.
+#With hours of different attempts, I'm going to settle at 57-59%. From research, it looks like experts can only get to around 75% with this dataset.
 
 import os
 import tensorflow as tf
@@ -110,6 +110,8 @@ history = model.fit(
 
 test_loss, test_acc = model.evaluate(test_ds)
 print('\nTest accuracy:', test_acc)
+
+model.save('model.keras')
 
 plt.figure(figsize=(10, 4))
 plt.plot(history.history['accuracy'], label='Training Accuracy')
