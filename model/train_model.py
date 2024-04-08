@@ -15,6 +15,7 @@
 import os
 import tensorflow as tf
 from keras import layers, models, callbacks
+import matplotlib.pyplot as plt
 
 data_dir = os.path.join(os.pardir, 'data', 'archive')
 train_dir = os.path.join(data_dir, 'train')
@@ -109,3 +110,41 @@ history = model.fit(
 
 test_loss, test_acc = model.evaluate(test_ds)
 print('\nTest accuracy:', test_acc)
+
+plt.figure(figsize=(10, 4))
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Training and Validation Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.savefig('training_validation_accuracy.jpg')  
+#plt.show()  
+
+plt.figure(figsize=(10, 4))
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Training and Validation Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.savefig('training_validation_loss.jpg') 
+#plt.show()  
+
+plt.figure(figsize=(10, 4))
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['loss'], label='Training Loss', linestyle='--')
+plt.title('Training Accuracy vs. Training Loss')
+plt.xlabel('Epoch')
+plt.legend()
+plt.savefig('training_accuracy_vs_loss.jpg')  
+#plt.show()  
+
+plt.figure(figsize=(10, 4))
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.plot(history.history['val_loss'], label='Validation Loss', linestyle='--')
+plt.title('Validation Accuracy vs. Validation Loss')
+plt.xlabel('Epoch')
+plt.legend()
+plt.savefig('validation_accuracy_vs_loss.jpg') 
+#plt.show() 
