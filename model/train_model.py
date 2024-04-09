@@ -12,6 +12,11 @@
 #I removed "disgusted" from the dataset because it was underrepresented. This improved accuracy slightly
 #With hours of different attempts, I'm going to settle at 57-59%. From research, it looks like experts can only get to around 75% with this dataset.
 
+#New issue. I can successfully take a picture from a video feed in a web browser. But the photo I am taking
+#does not focus just on the face, like the dataset does. There is a lot of extra noise like head/shoulders/background.
+#Now I need to look into focusing just on the face, so i can just sent that to the model... Because right now, all I'm getting is anger. :c
+
+
 import os
 import tensorflow as tf
 from keras import layers, models, callbacks
