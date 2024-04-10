@@ -3,25 +3,35 @@
 #Tensorflow has proved to be difficult to work with when attempting to utalize my gpu. 
 #Due to frusteration, I've moved over to pytorch. In hopes of getting my website to work in time for project submission.
 
+#attempt 1 with a basic sequential model resulted in 11% accuracy.
+#attempt 2, I used similar model structure to my tensorflow model. 53% accuracy.
+#tripled the epoch and got to 56% accuracy. 56% is not good enough. I'm hoping for closer to 70%.
 
+#I need to use a pretrained model... After some research, I'm going to try resnet18 because its a popular image recognition model.
+#First train with resnet, got 51% test accuracy with a 97% train accuracy. This is a sign of overfitting. womp womp
+
+from sys import argv
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, random_split
-from torchvision import datasets
 from torchvision.datasets import ImageFolder
-from torchvision.transforms import Compose, Resize, Grayscale, ToTensor, Normalize
+from torchvision.transforms import *
 from tqdm import tqdm
 from torch.optim.lr_scheduler import StepLR
+from torchvision import models
+
 
 BATCH_SIZE = 32
 
 TRANSFORM = Compose([
-    Resize((48, 48)), 
-    Grayscale(),       
+    Resize((48, 48)),
+    Grayscale(),
+    RandomApply([ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5)], p=0.5),
+    RandomHorizontalFlip(),
+    RandomRotation(20),
     ToTensor(),
-    Normalize(mean=[0.5], std=[0.5])
+    Normalize(mean=[0.5], std=[0.5]),
 ])
-
 training_data = ImageFolder(
     root="../data/archive/train",
     transform=TRANSFORM
@@ -85,14 +95,41 @@ class NeuralNetwork(nn.Module):
         x = self.flatten(x)
         logits = self.linear_relu_stack(x)
         return logits
+    
+class ResNetFER(nn.Module):
+    def __init__(self, num_classes=6): 
+        super(ResNetFER, self).__init__()
+        # Load a pre-trained ResNet
+        original_model = models.resnet34(pretrained=True)
+        
+        # Modify the first convolutional layer to accept 1-channel (grayscale) input. Resnet uses rgb
+        self.model = nn.Sequential(
+            nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False),
+            *list(original_model.children())[1:-1],  # Exclude original first conv layer and the original fc layer
+        )
+       
+        self.fc = nn.Linear(512, num_classes)  
+        
+    def forward(self, x):
+        x = self.model(x)
+        x = x.view(x.size(0), -1)  
+        x = self.fc(x)
+        return x
 
     
-model = NeuralNetwork().to(device)
+# model = NeuralNetwork().to(device)
+model = ResNetFER(num_classes=6).to(device)
 
 #parameter optimization
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
-scheduler = StepLR(optimizer, step_size=1, gamma=0.95)
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
+
+
+
+
+scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.75, patience=5, verbose=True)
+
+
 
 def train(dataloader, model, loss_fn, optimizer, epoch):
     model.train()
@@ -141,22 +178,25 @@ def evaluate(dataloader, model, loss_fn, description="Evaluation"):
         for X, y in tqdm(dataloader, desc=f"{description}"):
             X, y = X.to(device), y.to(device)
             pred = model(X)
-            running_loss += loss_fn(pred, y).item()
+            loss = loss_fn(pred, y)
+            running_loss += loss.item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-
-    running_loss /= size
+    
+    running_loss /= len(dataloader)
     accuracy = correct / size
     print(f"{description} Loss: {running_loss:>8f}, Accuracy: {(100*accuracy):>0.1f}%")
+    return running_loss, accuracy
 
 
-
-epochs = 60
+epochs = 15
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train(train_dataloader, model, loss_fn, optimizer, t)
     evaluate(val_dataloader, model, loss_fn, description="Validation")  
-    scheduler.step()
-    print("Done!")
+    val_loss, val_acc = evaluate(val_dataloader, model, loss_fn, "Validation")
+    scheduler.step(val_loss) 
+
+    
 
 evaluate(test_dataloader, model, loss_fn, description="Final Test")
-torch.save(model.state_dict(), "model.pth")
+torch.save(model.state_dict(), "model.pth") #56% accuracy
