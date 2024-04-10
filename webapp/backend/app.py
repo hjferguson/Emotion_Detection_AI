@@ -25,13 +25,13 @@ def predict():
     # Resize and convert to grayscale
     image = image.resize((48, 48)).convert('L')
 
-    # Optionally save the processed image for inspection
+    # im saving the image for testing for my sanity.
     save_path = "received_images"
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     image.save(os.path.join(save_path, "processed_image.jpg"))
 
-    # Convert PIL Image to numpy array and normalize
+    # Convert PIL Image to numpy array and normalize (put in range 0-1)
     image_array = np.asarray(image) / 255.0
 
     # Add batch dimension

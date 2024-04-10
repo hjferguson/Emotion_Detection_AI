@@ -1,0 +1,59 @@
+.webcam-container {
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .webcam-feed {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .emotion-display {
+    margin-top: 20px;
+    font-size: 2em;
+    color: #333;
+  }
+  
+  .control-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .control-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Specific Emotion Colors */
+  .happy {
+    color: #ffd700;
+  }
+  
+  .sad {
+    color: #007bff;
+  }
+  
+  .angry {
+    color: #dc3545;
+  }
+  
+  .surprise {
+    color: #ffc107;
+  }
+  
+  .fear {
+    color: #6f42c1;
+  }
+  
+  .neutral {
+    color: #6c757d;
+  }
+  
