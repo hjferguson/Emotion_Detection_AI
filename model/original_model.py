@@ -25,6 +25,9 @@ data_dir = os.path.join(os.pardir, 'data', 'archive')
 train_dir = os.path.join(data_dir, 'train')
 test_dir = os.path.join(data_dir, 'test')
 
+graphs_dir_original = "./graphs/original"
+os.makedirs(graphs_dir_original, exist_ok=True)
+
 BATCH_SIZE = 32
 IMG_HEIGHT = 48
 IMG_WIDTH = 48
@@ -104,7 +107,7 @@ early_stopping = callbacks.EarlyStopping(
     restore_best_weights=True
 )
 
-epochs = 5
+epochs = 15
 history = model.fit(
     train_ds,
     validation_data=val_ds,
@@ -117,40 +120,48 @@ print('\nTest accuracy:', test_acc)
 
 model.save('model.keras')
 
+import matplotlib.pyplot as plt
+
+# Directory for saving graphs
+graphs_dir_original = "./graphs/original"
+os.makedirs(graphs_dir_original, exist_ok=True)
+
+# Plot training & validation accuracy values
 plt.figure(figsize=(10, 4))
 plt.plot(history.history['accuracy'], label='Training Accuracy')
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.title('Training and Validation Accuracy')
-plt.xlabel('Epoch')
+plt.title('Model Accuracy')
 plt.ylabel('Accuracy')
-plt.legend()
-plt.savefig('./graphs/original/training_validation_accuracy.jpg')  
-#plt.show()  
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.savefig(f'{graphs_dir_original}/training_validation_accuracy.jpg')
 
+# Plot training & validation loss values
 plt.figure(figsize=(10, 4))
 plt.plot(history.history['loss'], label='Training Loss')
 plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.title('Training and Validation Loss')
-plt.xlabel('Epoch')
+plt.title('Model Loss')
 plt.ylabel('Loss')
-plt.legend()
-plt.savefig('./graphs/original/training_validation_loss.jpg') 
-#plt.show()  
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.savefig(f'{graphs_dir_original}/training_validation_loss.jpg')
 
+# Training Accuracy vs Loss
 plt.figure(figsize=(10, 4))
 plt.plot(history.history['accuracy'], label='Training Accuracy')
 plt.plot(history.history['loss'], label='Training Loss', linestyle='--')
-plt.title('Training Accuracy vs. Training Loss')
+plt.title('Training Accuracy vs. Loss')
+plt.ylabel('Value')
 plt.xlabel('Epoch')
-plt.legend()
-plt.savefig('./graphs/original/training_accuracy_vs_loss.jpg')  
-#plt.show()  
+plt.legend(['Accuracy', 'Loss'], loc='upper left')
+plt.savefig(f'{graphs_dir_original}/training_accuracy_vs_loss.jpg')
 
+# Validation Accuracy vs Loss
 plt.figure(figsize=(10, 4))
 plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
 plt.plot(history.history['val_loss'], label='Validation Loss', linestyle='--')
-plt.title('Validation Accuracy vs. Validation Loss')
+plt.title('Validation Accuracy vs. Loss')
+plt.ylabel('Value')
 plt.xlabel('Epoch')
-plt.legend()
-plt.savefig('./graphs/original/validation_accuracy_vs_loss.jpg') 
-#plt.show() 
+plt.legend(['Accuracy', 'Loss'], loc='upper left')
+plt.savefig(f'{graphs_dir_original}/validation_accuracy_vs_loss.jpg')

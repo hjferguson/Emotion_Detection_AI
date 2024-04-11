@@ -1,0 +1,80 @@
+
+.graph-page-container {
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 1000px;
+}
+  
+.graph-page-title {
+color: #333;
+margin-bottom: 20px;
+}
+
+
+.slick-slide {
+display: flex;
+justify-content: center;
+gap: 20px;
+margin-bottom: 20px;
+}
+
+.slick-prev:before, .slick-next:before {
+color: #007bff;
+}
+
+.graph-image-container {
+display: flex;
+justify-content: space-around; 
+flex-wrap: wrap;
+}
+
+.graph-image {
+    width: 50%; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin-bottom: 20px; 
+}
+  
+  
+.slick-dots li button:before {
+font-size: 12px;
+color: #007bff;
+}
+
+.slick-dots li.slick-active button:before {
+color: #0056b3;
+}
+
+
+.graph-control-btn {
+background-color: #007bff;
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.graph-control-btn:hover {
+background-color: #0056b3;
+}
+
+
+.slick-prev:before, .slick-next:before {
+    color: #007bff;
+    font-size: 50px; 
+  }
+  
+  
+.slick-prev, .slick-next {
+width: 30px; 
+height: 40px; 
+z-index: 1; 
+}
+  
+  
