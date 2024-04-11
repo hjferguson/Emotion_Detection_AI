@@ -1,38 +1,56 @@
 .webcam-container {
-    text-align: center;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; 
   
-  .webcam-feed {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .emotion-display {
-    margin-top: 20px;
-    font-size: 2em;
-    color: #333;
-  }
-  
-  .control-btn {
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+}
+
+.webcam-feed, .webcam-placeholder {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  height: 300px; 
+  width: 400px; 
+  transform: scaleX(-1);
+}
+
+.webcam-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ccc;
+  color: #fff; 
+  font-size: 24px;
+}
+
+.emotion-display {
+  font-size: 4em; /* Double the emoji size */
+  color: #333;
+  margin-top: 20px; /* Adjust spacing as needed */
+}
+
+.control-btn {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
   
   .control-btn:hover {
     background-color: #0056b3;
   }
   
-  /* Specific Emotion Colors */
+
   .happy {
     color: #ffd700;
   }
