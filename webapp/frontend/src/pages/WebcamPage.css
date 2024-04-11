@@ -29,9 +29,9 @@
 }
 
 .emotion-display {
-  font-size: 4em; /* Double the emoji size */
+  font-size: 4em; 
   color: #333;
-  margin-top: 20px; /* Adjust spacing as needed */
+  margin-top: 20px; 
 }
 
 .control-btn {
@@ -74,4 +74,3 @@
   .neutral {
     color: #6c757d;
   }
-  

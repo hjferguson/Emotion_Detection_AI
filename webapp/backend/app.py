@@ -5,13 +5,12 @@ from torchvision import transforms
 from PIL import Image
 import io
 import base64
-import os
 from efficientnet_pytorch import EfficientNet
 
 app = Flask(__name__)
 CORS(app)
 
-# Load the PyTorch model
+
 model_path = '../../model/efficientnet_model.pth'
 model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=6)
 model.load_state_dict(torch.load(model_path))
@@ -27,7 +26,7 @@ def predict():
     # Convert binary data to PIL Image
     image = Image.open(io.BytesIO(binary_data))
 
-    # Resize and convert the image for EfficientNet (make sure to match the preprocessing used during training)
+    
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.Grayscale(num_output_channels=3),  # EfficientNet uses RGB images
@@ -44,4 +43,4 @@ def predict():
     return jsonify({"emotion": predicted.item()})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
