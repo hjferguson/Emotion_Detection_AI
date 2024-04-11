@@ -1,16 +1,21 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import tensorflow as tf
-import numpy as np
+import torch
+from torchvision import transforms
 from PIL import Image
 import io
 import base64
 import os
+from efficientnet_pytorch import EfficientNet
 
 app = Flask(__name__)
 CORS(app)
 
-model = tf.keras.models.load_model('../../model/model.keras')
+# Load the PyTorch model
+model_path = '../../model/efficientnet_model.pth'
+model = EfficientNet.from_pretrained('efficientnet-b0', num_classes=6)
+model.load_state_dict(torch.load(model_path))
+model.eval()  # Set the model to evaluation mode
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -22,29 +27,21 @@ def predict():
     # Convert binary data to PIL Image
     image = Image.open(io.BytesIO(binary_data))
 
-    # Resize and convert to grayscale
-    image = image.resize((48, 48)).convert('L')
-
-    # im saving the image for testing for my sanity.
-    save_path = "received_images"
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-    image.save(os.path.join(save_path, "processed_image.jpg"))
-
-    # Convert PIL Image to numpy array and normalize (put in range 0-1)
-    image_array = np.asarray(image) / 255.0
-
-    # Add batch dimension
-    image_array = image_array.reshape((1, 48, 48, 1))
+    # Resize and convert the image for EfficientNet (make sure to match the preprocessing used during training)
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.Grayscale(num_output_channels=3),  # EfficientNet uses RGB images
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    image = transform(image).unsqueeze(0)  # Add batch dimension
 
     # Predict
-    print("Input shape:", image_array.shape)
-    prediction = model.predict(image_array)
-    print("Raw prediction:", prediction)
-    
-    response = np.argmax(prediction, axis=1)
+    with torch.no_grad():
+        outputs = model(image)
+        _, predicted = torch.max(outputs, 1)
 
-    return jsonify({"emotion": int(response[0])})
+    return jsonify({"emotion": predicted.item()})
 
 if __name__ == '__main__':
     app.run(debug=True)

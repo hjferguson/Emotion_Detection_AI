@@ -122,10 +122,7 @@ model = ResNetFER(num_classes=6).to(device)
 
 #parameter optimization
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
-
-
-
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
 scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.75, patience=5, verbose=True)
 
@@ -188,7 +185,7 @@ def evaluate(dataloader, model, loss_fn, description="Evaluation"):
     return running_loss, accuracy
 
 
-epochs = 15
+epochs = 20
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train(train_dataloader, model, loss_fn, optimizer, t)
@@ -199,4 +196,4 @@ for t in range(epochs):
     
 
 evaluate(test_dataloader, model, loss_fn, description="Final Test")
-torch.save(model.state_dict(), "model.pth") #56% accuracy
+torch.save(model.state_dict(), "model.pth") #59% accuracy using resnet34
