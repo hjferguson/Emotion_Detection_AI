@@ -104,7 +104,7 @@ early_stopping = callbacks.EarlyStopping(
     restore_best_weights=True
 )
 
-epochs = 15
+epochs = 5
 history = model.fit(
     train_ds,
     validation_data=val_ds,
@@ -124,7 +124,7 @@ plt.title('Training and Validation Accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.savefig('training_validation_accuracy.jpg')  
+plt.savefig('./graphs/original/training_validation_accuracy.jpg')  
 #plt.show()  
 
 plt.figure(figsize=(10, 4))
@@ -134,7 +134,7 @@ plt.title('Training and Validation Loss')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
-plt.savefig('training_validation_loss.jpg') 
+plt.savefig('./graphs/original/training_validation_loss.jpg') 
 #plt.show()  
 
 plt.figure(figsize=(10, 4))
@@ -143,7 +143,7 @@ plt.plot(history.history['loss'], label='Training Loss', linestyle='--')
 plt.title('Training Accuracy vs. Training Loss')
 plt.xlabel('Epoch')
 plt.legend()
-plt.savefig('training_accuracy_vs_loss.jpg')  
+plt.savefig('./graphs/original/training_accuracy_vs_loss.jpg')  
 #plt.show()  
 
 plt.figure(figsize=(10, 4))
@@ -152,5 +152,5 @@ plt.plot(history.history['val_loss'], label='Validation Loss', linestyle='--')
 plt.title('Validation Accuracy vs. Validation Loss')
 plt.xlabel('Epoch')
 plt.legend()
-plt.savefig('validation_accuracy_vs_loss.jpg') 
+plt.savefig('./graphs/original/validation_accuracy_vs_loss.jpg') 
 #plt.show() 

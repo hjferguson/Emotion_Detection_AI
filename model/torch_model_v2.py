@@ -21,6 +21,10 @@ from torchvision.transforms import *
 from tqdm import tqdm
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from efficientnet_pytorch import EfficientNet
+import os
+
+graphs_dir = "graphs/efficientnet"
+os.makedirs(graphs_dir, exist_ok=True)
 
 BATCH_SIZE = 32
 
